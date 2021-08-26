@@ -3,7 +3,7 @@ import React from 'react';
 import { FormInput, FormSelect, FormText } from './components';
 
 import { countPrice } from './util/countPrice';
-import { countDeadline } from './util/countDeadline';
+import { getDeadline } from './util/countDeadline';
 
 const services = [
 	{ name: 'Редактирование', value: 'edit' },
@@ -72,7 +72,7 @@ const App = () => {
 
 	React.useEffect(() => {
 		const countedPrice = countPrice(dataForCount.textLength, dataForCount.lang, dataForCount.fileType);
-		const countedDeadline = countDeadline(dataForCount.textLength, dataForCount.lang, dataForCount.fileType);
+		const countedDeadline = getDeadline(dataForCount.textLength, dataForCount.lang, dataForCount.fileType);
 		setPrice(countedPrice);
 		setDeadline(countedDeadline);
 	}, [dataForCount]);

@@ -120,15 +120,49 @@ function getEndOfWork(a, b) {
 	return result;
 }
 
-export function countDeadline(textLength, textType, fileType) {
+function getFinalResult(endOfWork, startDaysToWork, dateInfo) {
+	const startWorkDay = 10.0;
+	const endWorkDay = 19.0;
+
+	if (endOfWork > endWorkDay) {
+		let diff = Number((endOfWork - endWorkDay).toFixed(2));
+		let daysToWork = startDaysToWork;
+
+		while (diff >= 9.1) {
+			daysToWork += 1;
+			diff -= 9;
+		}
+
+		let n = 1;
+		let nextDate;
+		let finalDate;
+
+		while (daysToWork) {
+			nextDate = new Date(dateInfo.year, dateInfo.month, dateInfo.day + n);
+			finalDate = getDateInfo(nextDate);
+
+			if (finalDate.dayOfWeek !== 0 && finalDate.dayOfWeek !== 6) {
+				daysToWork -= 1;
+			}
+
+			n += 1;
+		}
+
+		endOfWork = (diff + startWorkDay).toFixed(2);
+
+		return `Срок сдачи: ${finalDate.readableDate} в ${endOfWork}`;
+	}
+}
+
+export function getDeadline(textLength, textType, fileType) {
 	if (!textLength || !textType || !fileType) {
 		return '';
 	}
 
 	const workTime = getWorkTime(textLength, textType, fileType);
 
-	const startWorkTime = 10.0;
-	const endWorkTime = 19.0;
+	const startWorkDay = 10.0;
+	const endWorkDay = 19.0;
 
 	const date = new Date();
 	const dateInfo = getDateInfo(date);
@@ -137,27 +171,30 @@ export function countDeadline(textLength, textType, fileType) {
 
 	let endOfWork = getEndOfWork(workTime, currentTime);
 
-	if (currentTime >= endWorkTime || dateInfo.dayOfWeek === 0 || dateInfo.dayOfWeek === 6) {
-		endOfWork = (workTime + startWorkTime).toFixed(2);
+	if (currentTime >= endWorkDay || dateInfo.dayOfWeek === 0 || dateInfo.dayOfWeek === 6) {
+		endOfWork = (workTime + startWorkDay).toFixed(2);
+
+		if (endOfWork > endWorkDay) {
+			return getFinalResult(endOfWork, 2, dateInfo);
+		}
 
 		const nextDate = getNextWorkDate(dateInfo.year, dateInfo.month, dateInfo.day);
 
 		return `Срок сдачи: ${nextDate} в ${endOfWork}`;
 	}
 
-	if (endOfWork > endWorkTime) {
-		const diff = Number((endOfWork - endWorkTime).toFixed(2));
-		endOfWork = (startWorkTime + diff).toFixed(2);
+	if (currentTime < startWorkDay) {
+		endOfWork = (workTime + startWorkDay).toFixed(2);
 
-		const nextDate = getNextWorkDate(dateInfo.year, dateInfo.month, dateInfo.day);
-
-		return `Срок сдачи: ${nextDate} в ${endOfWork}`;
-	}
-
-	if (currentTime < startWorkTime) {
-		endOfWork = (workTime + startWorkTime).toFixed(2);
+		if (endOfWork > endWorkDay) {
+			return getFinalResult(endOfWork, 1, dateInfo);
+		}
 
 		return `Срок сдачи: ${dateInfo.readableDate} в ${endOfWork}`;
+	}
+
+	if (endOfWork > endWorkDay) {
+		return getFinalResult(endOfWork, 1, dateInfo);
 	}
 
 	return `Срок сдачи: ${dateInfo.readableDate} в ${endOfWork.toFixed(2)}`;
