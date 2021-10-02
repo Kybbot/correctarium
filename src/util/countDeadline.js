@@ -98,7 +98,7 @@ function getNextWorkDate(year, month, day) {
 
 	while (nextDate === null) {
 		n += 1;
-		nextDate = workDate(year, month, day + n);
+		nextDate = workDate(year, +month, +day + n);
 	}
 
 	return nextDate;
