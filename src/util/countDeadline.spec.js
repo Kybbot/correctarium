@@ -1,6 +1,6 @@
 import { getDeadline } from './countDeadline';
 
-describe('countPrice :', () => {
+describe('countDeadline :', () => {
 	beforeEach(() => {
 		jest.useFakeTimers('modern').setSystemTime(new Date('2021-08-26T12:10:00'));
 	});
@@ -27,5 +27,33 @@ describe('countPrice :', () => {
 
 	test('should return 01.09.21 excluding weekends day for latin', () => {
 		expect(getDeadline(13945, 'latin', 'application/msword')).toBe('Срок сдачи: 01.09.21 в 18.33');
+	});
+});
+
+describe('countDeadline in 09:00 o`clock :', () => {
+	beforeEach(() => {
+		jest.useFakeTimers('modern').setSystemTime(new Date('2021-08-26T09:10:00'));
+	});
+
+	test('should return current day for cyrillic', () => {
+		expect(getDeadline(2031, 'cyrillic', 'application/msword')).toBe('Срок сдачи: 26.08.21 в 12.01');
+	});
+
+	test('should return current day for latin', () => {
+		expect(getDeadline(2031, 'latin', 'application/msword')).toBe('Срок сдачи: 26.08.21 в 16.36');
+	});
+});
+
+describe('countDeadline in 19:00 o`clock :', () => {
+	beforeEach(() => {
+		jest.useFakeTimers('modern').setSystemTime(new Date('2021-08-26T19:10:00'));
+	});
+
+	test('should return next day for cyrillic', () => {
+		expect(getDeadline(2031, 'cyrillic', 'application/msword')).toBe('Срок сдачи: 27.08.21 в 12.01');
+	});
+
+	test('should return next day for latin', () => {
+		expect(getDeadline(2031, 'latin', 'application/msword')).toBe('Срок сдачи: 27.08.21 в 16.36');
 	});
 });
