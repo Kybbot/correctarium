@@ -17,20 +17,20 @@ function timeConvert(n: number): number {
 	const minutes: number = (hours - rhours) * 60; // get minutes without houres
 	let rminutes: number | string = Math.round(minutes); // get integer minutes
 
-	rminutes = rminutes < 10 ? '0' + rminutes : rminutes;
+	rminutes = rminutes < 10 ? `0${rminutes}` : rminutes;
 
 	return Number(`${rhours}.${rminutes}`);
 }
 
 function getWorkTime(textLength: number, textType: string, fileType: string): number {
-	const maxCyrillicSignForHoure: number = 1333;
-	const maxLatinSignForHoure: number = 333;
+	const maxCyrillicSignForHoure = 1333;
+	const maxLatinSignForHoure = 333;
 
-	const baseTime: number = 30; //min
-	const minTimeOfProcessing: number = 60; //min
+	const baseTime = 30; // min
+	const minTimeOfProcessing = 60; // min
 
-	const percent: number = 20;
-	let addPercent: boolean = true;
+	const percent = 20;
+	let addPercent = true;
 
 	let time: number;
 
@@ -69,17 +69,17 @@ function getDateInfo(date: Date): getDateInfoResult {
 	let month: number | string = date.getMonth() + 1;
 	let day: number | string = date.getDate();
 
-	month = month < 10 ? '0' + month : month;
-	day = day < 10 ? '0' + day : day;
+	month = month < 10 ? `0${month}` : month;
+	day = day < 10 ? `0${day}` : day;
 
-	const readableDate: string = `${day}.${month}.${String(year).slice(2)}`;
+	const readableDate = `${day}.${month}.${String(year).slice(2)}`;
 
 	const currentHour: number = date.getHours();
 	let currentMinuts: number | string = date.getMinutes();
 
-	currentMinuts = currentMinuts < 10 ? '0' + currentMinuts : currentMinuts;
+	currentMinuts = currentMinuts < 10 ? `0${currentMinuts}` : currentMinuts;
 
-	const currentTime: number = Number(`${currentHour}.${currentMinuts}`);
+	const currentTime = Number(`${currentHour}.${currentMinuts}`);
 
 	return {
 		year,
@@ -108,7 +108,7 @@ function workDate(y: number, m: number, d: number): string | null {
 
 function getNextWorkDate(year: number, month: number, day: number): string {
 	let nextDate: string | null = null;
-	let n: number = 0;
+	let n = 0;
 
 	while (nextDate === null) {
 		n += 1;
@@ -122,12 +122,12 @@ function getNextWorkDate(year: number, month: number, day: number): string {
 
 function getEndOfWork(a: number, b: number): number {
 	const aArr: string[] = a.toString().split('.'); // split time on hourse and minutes
-	if (aArr[1]?.length === 1) aArr[1] = aArr[1] + '0'; // if a = 1.2 => convert to 1.20
+	if (aArr[1]?.length === 1) aArr[1] += '0'; // if a = 1.2 => convert to 1.20
 
 	const aMin: number = +aArr[0] * 60 + (+aArr[1] || 0); // convert to minutes
 
 	const bArr: string[] = b.toString().split('.');
-	if (bArr[1]?.length === 1) bArr[1] = bArr[1] + '0';
+	if (bArr[1]?.length === 1) bArr[1] += '0';
 
 	const bMin: number = +bArr[0] * 60 + (+bArr[1] || 0);
 
@@ -139,10 +139,10 @@ function getEndOfWork(a: number, b: number): number {
 // return final date and time without non-working hours and weekends
 
 function getFinalResult(endOfWork: number, startDaysToWork: number, dateInfo: getDateInfoResult): string {
-	const startWorkDay: number = 10.0;
-	const endWorkDay: number = 19.0;
+	const startWorkDay = 10.0;
+	const endWorkDay = 19.0;
 
-	let diff: number = Number((endOfWork - endWorkDay).toFixed(2));
+	let diff = Number((endOfWork - endWorkDay).toFixed(2));
 	let daysToWork: number = startDaysToWork;
 
 	// counting how many days to spend on work
@@ -152,7 +152,7 @@ function getFinalResult(endOfWork: number, startDaysToWork: number, dateInfo: ge
 		diff -= 9;
 	}
 
-	let n: number = 1;
+	let n = 1;
 	let nextDate: Date;
 	let finalDate: getDateInfoResult;
 
@@ -181,13 +181,13 @@ export function getDeadline(textLength: number, textType: string, fileType: stri
 
 	const workTime: number = getWorkTime(textLength, textType, fileType);
 
-	const startWorkDay: number = 10.0;
-	const endWorkDay: number = 19.0;
+	const startWorkDay = 10.0;
+	const endWorkDay = 19.0;
 
 	const date: Date = new Date();
 	const dateInfo = getDateInfo(date);
 
-	const currentTime = dateInfo.currentTime;
+	const { currentTime } = dateInfo;
 
 	let endOfWork: number = getEndOfWork(workTime, currentTime);
 

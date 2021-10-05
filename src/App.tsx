@@ -20,7 +20,7 @@ const langs: selectOptionsItems[] = [
 	{ name: 'Английский (носитель)', value: 'latin' },
 ];
 
-const App = () => {
+const App: React.FC = () => {
 	const [formData, setFormData] = React.useState<formDataType>({
 		service: '',
 		text: '',
@@ -56,8 +56,10 @@ const App = () => {
 
 		const data = new FormData();
 
-		for (let key in formData) {
-			data.set(key, formData[key]);
+		for (const key in formData) {
+			if ({}.hasOwnProperty.call(formData, key)) {
+				data.set(key, formData[key]);
+			}
 		}
 
 		console.log('Send data to server');
@@ -66,8 +68,8 @@ const App = () => {
 	React.useEffect(() => {
 		const arrOfRes: boolean[] = [];
 
-		for (let key in formData) {
-			if (key !== 'comment') {
+		for (const key in formData) {
+			if ({}.hasOwnProperty.call(formData, key) && key !== 'comment') {
 				arrOfRes.push(!!formData[key]);
 			}
 		}
@@ -144,7 +146,7 @@ const App = () => {
 					</fieldset>
 				</div>
 				<div className='form__order'>
-					<button className='form__close' type='button'></button>
+					<button className='form__close' type='button' aria-label='Close' />
 					<p className='form__price'>
 						{price}
 						<span className='form__currency'>грн</span>

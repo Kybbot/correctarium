@@ -6,13 +6,13 @@ const FormText: React.FC<formTextProps> = ({ dataForCount, textareaValue, setDat
 
 	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name } = event.target;
-		const file = event.target.files![0];
+		const file: File = event.target.files![0];
 
-		let reader = new FileReader();
+		const reader: FileReader = new FileReader();
 
 		reader.readAsText(file);
 
-		reader.onload = function () {
+		reader.onload = () => {
 			setDataForCount((state) => ({
 				...state,
 				fileName: file.name,
@@ -53,7 +53,7 @@ const FormText: React.FC<formTextProps> = ({ dataForCount, textareaValue, setDat
 
 	return (
 		<div className='area'>
-			<textarea className='textarea' name='text' onChange={handleTextareaChange} value={textareaValue}></textarea>
+			<textarea className='textarea' name='text' onChange={handleTextareaChange} value={textareaValue} />
 			<div className={`area__download ${textareaValue ? 'area__download--hiden' : ''}`}>
 				<span className='placeholder'>Вставьте текст или </span>
 				<label className='area__label' htmlFor='textFile'>
