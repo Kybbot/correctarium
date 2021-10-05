@@ -147,9 +147,9 @@ function getFinalResult(endOfWork: number, startDaysToWork: number, dateInfo: ge
 
 	// counting how many days to spend on work
 
-	while (diff >= 9.1) {
+	while (diff >= 9.01) {
 		daysToWork += 1;
-		diff -= 9;
+		diff = Number((diff - 9).toFixed(2));
 	}
 
 	let n = 1;
