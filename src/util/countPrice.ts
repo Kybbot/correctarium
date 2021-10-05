@@ -1,20 +1,20 @@
 import { defaultFiles } from '../constants';
 
-export function countPrice(textLength, textType, fileType) {
+export function countPrice(textLength: number, textType: string, fileType: string) {
 	if (!textLength || !textType || !fileType) {
 		return 0;
 	}
 
-	const oneCyrillicSignPrice = 0.05;
-	const oneLatinSignPrice = 0.12;
+	const oneCyrillicSignPrice: number = 0.05;
+	const oneLatinSignPrice: number = 0.12;
 
-	const cyrillicMinPrice = 50;
-	const latinMinPrice = 120;
+	const cyrillicMinPrice: number = 50;
+	const latinMinPrice: number = 120;
 
-	const percent = 20;
-	let addPercent = true;
+	const percent: number = 20;
+	let addPercent: boolean = true;
 
-	let price;
+	let price: number;
 
 	switch (textType) {
 		case 'cyrillic':

@@ -5,12 +5,15 @@ import { FormInput, FormSelect, FormText } from './components';
 import { countPrice } from './util/countPrice';
 import { getDeadline } from './util/countDeadline';
 
-const services = [
+import { formDataType, dataForCountType } from './types/appForms';
+import { selectOptionsItems } from './types/formSelect';
+
+const services: selectOptionsItems[] = [
 	{ name: 'Редактирование', value: 'edit' },
 	{ name: 'Перевод', value: 'translate' },
 ];
 
-const langs = [
+const langs: selectOptionsItems[] = [
 	{ name: 'Украинский', value: 'cyrillic' },
 	{ name: 'Русский', value: 'cyrillic' },
 	{ name: 'Английский', value: 'latin' },
@@ -18,27 +21,28 @@ const langs = [
 ];
 
 const App = () => {
-	const [formData, setFormData] = React.useState({
-		service: null,
+	const [formData, setFormData] = React.useState<formDataType>({
+		service: '',
 		text: '',
 		email: '',
 		name: '',
 		comment: '',
-		lang: null,
+		lang: '',
 	});
-	const [price, setPrice] = React.useState(0);
-	const [deadline, setDeadline] = React.useState('');
-	const [isDisabled, setIsDisabled] = React.useState(true);
 
-	const [dataForCount, setDataForCount] = React.useState({
-		fileName: null,
-		textLength: null,
-		lang: null,
-		service: null,
+	const [price, setPrice] = React.useState<number>(0);
+	const [deadline, setDeadline] = React.useState<string>('');
+	const [isDisabled, setIsDisabled] = React.useState<boolean>(true);
+
+	const [dataForCount, setDataForCount] = React.useState<dataForCountType>({
+		fileName: '',
+		textLength: 0,
+		lang: '',
+		service: '',
 		fileType: 'application/msword',
 	});
 
-	const handleInputChange = (event) => {
+	const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
 
 		setFormData((state) => ({
@@ -47,7 +51,7 @@ const App = () => {
 		}));
 	};
 
-	const handleFormSubmit = (event) => {
+	const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
 		const data = new FormData();
@@ -60,19 +64,25 @@ const App = () => {
 	};
 
 	React.useEffect(() => {
-		const arrOfRes = [];
+		const arrOfRes: boolean[] = [];
+
 		for (let key in formData) {
 			if (key !== 'comment') {
 				arrOfRes.push(!!formData[key]);
 			}
 		}
 
-		if (!arrOfRes.includes(false)) setIsDisabled(false);
+		if (!arrOfRes.includes(false)) {
+			setIsDisabled(false);
+		} else {
+			setIsDisabled(true);
+		}
 	}, [formData]);
 
 	React.useEffect(() => {
 		const countedPrice = countPrice(dataForCount.textLength, dataForCount.lang, dataForCount.fileType);
 		const countedDeadline = getDeadline(dataForCount.textLength, dataForCount.lang, dataForCount.fileType);
+
 		setPrice(countedPrice);
 		setDeadline(countedDeadline);
 	}, [dataForCount]);

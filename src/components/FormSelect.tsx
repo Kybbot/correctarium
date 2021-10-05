@@ -1,29 +1,36 @@
 import React from 'react';
 import arrowDown from '../assets/img/arrow_down.svg';
 
-const FormSelect = React.memo(({ items, name, formName, setDataForCount, setFormData }) => {
-	const [visiblePopup, setVisiblePopup] = React.useState(false);
-	const [value, setValue] = React.useState(null);
+import {
+	formSelectProps,
+	handleKeyDownOnSelectItemType,
+	handleOnSelectItemType,
+	handleSelectChangeType,
+} from '../types/formSelect';
 
-	const selectRef = React.useRef();
+const FormSelect: React.FC<formSelectProps> = React.memo(({ items, name, formName, setDataForCount, setFormData }) => {
+	const [visiblePopup, setVisiblePopup] = React.useState<boolean>(false);
+	const [value, setValue] = React.useState<string>('');
+
+	const selectRef = React.useRef<HTMLDivElement>(null);
 
 	const toggleVisiblePopup = () => {
 		setVisiblePopup(!visiblePopup);
 	};
 
-	const toggleVisiblePopuponKeyDown = (event) => {
+	const toggleVisiblePopuponKeyDown = (event: React.KeyboardEvent) => {
 		if (event.key === 'Enter') {
 			setVisiblePopup(!visiblePopup);
 		}
 	};
 
-	const handleOutsideClick = (event) => {
+	const handleOutsideClick = (event: any) => {
 		if (selectRef.current && !selectRef.current.contains(event.target)) {
 			setVisiblePopup(false);
 		}
 	};
 
-	const handleSelectChange = (name, value, type) => {
+	const handleSelectChange: handleSelectChangeType = (name, value, type) => {
 		setDataForCount((state) => ({
 			...state,
 			[name]: type,
@@ -35,13 +42,13 @@ const FormSelect = React.memo(({ items, name, formName, setDataForCount, setForm
 		}));
 	};
 
-	const handleOnSelectItem = (name, value) => {
+	const handleOnSelectItem: handleOnSelectItemType = (name, value) => {
 		setValue(name);
 		handleSelectChange(formName, name, value);
 		setVisiblePopup(!visiblePopup);
 	};
 
-	const handleKeyDownOnSelectItem = (event, name, value) => {
+	const handleKeyDownOnSelectItem: handleKeyDownOnSelectItemType = (event, name, value) => {
 		if (event.key === 'Enter') {
 			setValue(name);
 			handleSelectChange(formName, name, value);

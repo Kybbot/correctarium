@@ -1,7 +1,9 @@
 import React from 'react';
 
-const FormInput = ({ labelName, ...rest }) => {
-	const inputRef = React.useRef();
+import { formInputProps } from '../types/formInput';
+
+const FormInput: React.FC<formInputProps> = ({ labelName, ...rest }) => {
+	const inputRef = React.useRef<HTMLInputElement>(null);
 
 	return (
 		<label className='label'>

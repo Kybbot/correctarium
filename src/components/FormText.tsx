@@ -1,11 +1,12 @@
 import React from 'react';
+import { formTextProps } from '../types/formText';
 
-const FormText = ({ dataForCount, textareaValue, setDataForCount, setFormData }) => {
+const FormText: React.FC<formTextProps> = ({ dataForCount, textareaValue, setDataForCount, setFormData }) => {
 	const [open, setOpen] = React.useState(false);
 
-	const handleFileChange = (event) => {
+	const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name } = event.target;
-		const file = event.target.files[0];
+		const file = event.target.files![0];
 
 		let reader = new FileReader();
 
@@ -16,7 +17,7 @@ const FormText = ({ dataForCount, textareaValue, setDataForCount, setFormData })
 				...state,
 				fileName: file.name,
 				fileType: file.type,
-				textLength: reader.result.length,
+				textLength: reader.result!.toString().trim().length,
 			}));
 
 			setOpen(true);
@@ -24,12 +25,12 @@ const FormText = ({ dataForCount, textareaValue, setDataForCount, setFormData })
 
 		setFormData((state) => ({
 			...state,
-			text: true,
+			text: 'Text in file',
 			[name]: file,
 		}));
 	};
 
-	const handleTextareaChange = (event) => {
+	const handleTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
 		const { name, value } = event.target;
 
 		setDataForCount((state) => ({
@@ -43,16 +44,16 @@ const FormText = ({ dataForCount, textareaValue, setDataForCount, setFormData })
 		}));
 	};
 
-	const fileRef = React.useRef();
+	const fileRef = React.useRef<HTMLInputElement>(null);
 
-	const handleFileOpen = (event) => {
+	const handleFileOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
-		fileRef.current.click();
+		fileRef.current!.click();
 	};
 
 	return (
 		<div className='area'>
-			<textarea className='form__textarea' name='text' onChange={handleTextareaChange} value={textareaValue}></textarea>
+			<textarea className='textarea' name='text' onChange={handleTextareaChange} value={textareaValue}></textarea>
 			<div className={`area__download ${textareaValue ? 'area__download--hiden' : ''}`}>
 				<span className='placeholder'>Вставьте текст или </span>
 				<label className='area__label' htmlFor='textFile'>
