@@ -45,6 +45,7 @@ body {
 
 	display: flex;
 	flex-direction: column;
+	gap: 30px;
 }
 
 .form__order {
@@ -57,7 +58,7 @@ body {
 	font-size: 30px;
 	font-weight: 500;
 	line-height: 1.47;
-	margin: 0 0 70px 0;
+	margin: 0 0 40px 0;
 }
 
 .form__fieldset {
@@ -67,20 +68,6 @@ body {
 	margin: 0;
 	padding: 0;
 	border: none;
-}
-
-.form__textarea {
-	max-width: 660px;
-	resize: none;
-	min-height: 200px;
-	padding: 20px 30px;
-	margin-bottom: 0;
-	width: 100%;
-	background-color: transparent;
-	border: 1px solid #eeeeee;
-	border-radius: 8px;
-	font-size: 14px;
-	outline: none;
 }
 
 .form__close {
@@ -167,7 +154,6 @@ body {
 	position: relative;
 	max-width: 660px;
 	width: 100%;
-	margin-bottom: 30px;
 }
 
 .area__download {
@@ -228,18 +214,40 @@ body {
 	display: none;
 }
 
+/* TEXTAREA */
+
+.textarea {
+	width: 100%;
+	max-width: 660px;
+	height: 100%;
+	min-height: 200px;
+	resize: none;
+	padding: 20px 30px;
+	background-color: transparent;
+	border: 1px solid #eeeeee;
+	border-radius: 8px;
+	font-size: 14px;
+	outline: none;
+}
+
+.textarea:focus {
+	border: 1px solid #0068e4;
+}
+
 /* INPUT */
 
-.input,
-.select {
+.input {
 	width: 100%;
 	background-color: transparent;
 	border: 1px solid #eeeeee;
 	padding: 19px 20px;
 	border-radius: 8px;
-	margin-bottom: 30px;
 	font-size: 14px;
 	outline: none;
+}
+
+.input:focus {
+	border: 1px solid #0068e4;
 }
 
 .input:focus + .label__name {
@@ -249,18 +257,18 @@ body {
 /* SELECT */
 
 .select {
-	max-width: 345px;
-}
-
-.select {
 	position: relative;
+	max-width: 345px;
+	width: 100%;
+	background-color: transparent;
+	border: 1px solid #eeeeee;
+	border-radius: 8px;
+	font-size: 14px;
 	cursor: pointer;
 	outline: none;
 }
 
-.select:focus,
-.input:focus,
-.form__textarea:focus {
+.select:focus {
 	border: 1px solid #0068e4;
 }
 
@@ -272,6 +280,7 @@ body {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	padding: 19px 20px;
 }
 
 .select__name.select__name--min {
@@ -343,4 +352,49 @@ body {
 
 .label__name--visible {
 	visibility: visible;
+}
+
+/* MEDIA */
+
+@media screen and (max-width: 1083px) {
+	.form {
+		flex-direction: column;
+	}
+
+	.form__close {
+		display: none;
+	}
+
+	.form__order {
+		flex: 1 1 auto;
+		text-align: center;
+		padding: 100px 0;
+	}
+}
+
+@media screen and (max-width: 700px) {
+	.form__fieldset {
+		flex-direction: column;
+	}
+}
+
+@media screen and (max-width: 470px) {
+	.form {
+		padding: 40px 30px 0 30px;
+	}
+
+	.form__title {
+		font-size: 26px;
+		margin: 0 0 20px 0;
+	}
+}
+
+@media screen and (max-width: 375px) {
+	.textarea {
+		padding: 20px 10px;
+	}
+
+	.area__download {
+		left: 20px;
+	}
 }
